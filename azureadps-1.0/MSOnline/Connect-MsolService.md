@@ -55,6 +55,19 @@ This command attempts to initiate a connection to AzureChinaCloud with Azure Act
 The credential must be of the type **PSCredential**.
 To obtain a credential object, use the **Get-Credential** cmdlet.
 
+### Example 3: Initiate a connection by using access tokens
+```
+PS C:\> $credential = Get-Credential
+PS C:\> $refreshToken = '<RefreshToken>'
+
+PS C:\> $aadGraphToken = New-SecMgmtAccessToken -ApplicationId 'xxxx-xxxx-xxxx-xxxx' -Credential $credential -RefreshToken $refreshToken -Scopes 'https://graph.windows.net/.default' -ServicePrincipal -Tenant 'yyyy-yyyy-yyyy-yyyy'
+ 
+PS C:\> $graphToken = New-SecMgmtAccessToken -ApplicationId 'xxxx-xxxx-xxxx-xxxx' -Credential $credential -RefreshToken $refreshToken -Scopes 'https://graph.microsoft.com/.default' -ServicePrincipal -Tenant 'yyyy-yyyy-yyyy-yyyy'
+
+Connect-MsolService -AdGraphAccessToken $aadGraphToken.AccessToken -MsGraphAccessToken $graphToken.AccessToken
+```
+This command attemps to initiate a connection with Azure Active Directory using access tokens and a previously create Azure App registration.
+
 ## PARAMETERS
 
 ### -Credential
